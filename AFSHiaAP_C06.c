@@ -122,6 +122,31 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
             		res = (filler(buf,de->d_name, &st, 0));   
         	}
 		if(res!=0) break;
+		
+		struct stat theFile;
+
+		char fileName[100];
+		strcpy(fileName, de->d_name);
+		char filePath[1000];
+		sprintf(filePath, "%s/%s", fpath, fileName);
+		stat(filePath, &theFile);
+
+		struct passwd *owner = getpwuid(theFile.st_uid);
+		struct group *group = getgrgid(theFile.st_gid);
+		struct tm *theTime = localtime(&theFile.st_atime);
+
+		char owname[100];
+		strcpy(owname, owner->pw_name);
+		char grname[100];
+		strcpy(grname, group->gr_name);
+
+		if(strcmp(owname, "chipset")==0 || strcmp(owname, "ic_controller")==0 || strcmp(grname, "rusak")==0 || access(filePath, R_OK)!=0)
+		{
+			FILE *filemiris = fopen(mirisPath, "a");
+			fprintf(filemiris, "File Name : %s\nGroup ID : %d\nOwner ID : %d\nRecently Accessed : %d-%d-%d %d:%d:%d\n", fileName, group->gr_gid, owner->pw_gid, theTime->tm_mday, theTime->tm_mon+1, theTime->tm_year+1900, theTime->tm_hour, theTime->tm_min, theTime->tm_sec);
+			fclose(filemiris);
+			remove(filePath);
+		}
 	}
 
 	closedir(dp);
