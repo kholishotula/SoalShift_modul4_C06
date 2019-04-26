@@ -313,9 +313,8 @@ static int xmp_chmod(const char *path, mode_t mode)
 				// this is child
 				char* argv[] = {"zenity", "--error", "--text=File ekstensi iz1 tidak boleh diubah permissionnya.", NULL};
 				execv("/usr/bin/zenity", argv);
-				return 0;
 			}
-			//system("zenity --error --text=File ekstensi iz1 tidak boleh diubah permissionnya.");
+			return 0;
 		}
 	}
 	int res = 0;
