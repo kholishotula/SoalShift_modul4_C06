@@ -14,41 +14,41 @@ static const char *dirpath = "/home/maya/shift4";
 static const char *youtuber = "/home/maya/shift4/YOUTUBER";
 char x[] ="qE1~ YMUR2\"`hNIdPzi%^t@(Ao:=CQ,nx4S[7mHFye#aT6+v)DfKL$r?bkOGB>}!9_wV']jcp5JZ&Xl|\\8s;g<{3.u*W-0";
 void encr(char inp[]){
-int idx; 
-int i, j;
+	int idx; 
+	int i, j;
 	for(i = 0 ; i< strlen(inp) ;i++){
 		if(inp[i]=='/')
 			inp[i] = inp[i];
 		
 		else{
-		for(j = 0; j<strlen(x) ; j++){
-			if(inp[i] == x[j]){
-				idx = j - key ;
+			for(j = 0; j<strlen(x) ; j++){
+				if(inp[i] == x[j]){
+					idx = j - key ;
 				break;
 			}
 		}
 		if(idx < 0 )
-		idx = idx + 94;
+			idx = idx + 94;
 		
 		inp[i] = x[idx];}
 	}
 }
 void decr(char inp[]){
-int idx; 
-int i, j;
+	int idx; 
+	int i, j;
 	for(i = 0 ; i< strlen(inp) ;i++){
 		if(inp[i]=='/')
 			inp[i] = inp[i];
 		
 		else{
-		for(j = 0; j<strlen(x) ; j++){
-			if(inp[i] == x[j]){
-				idx = j + key;
+			for(j = 0; j<strlen(x) ; j++){
+				if(inp[i] == x[j]){
+					idx = j + key;
 				break;
 			}
 		}
 		if(idx > strlen(x))
-		idx = idx - 94;
+			idx = idx - 94;
 		
 		inp[i] = x[idx];}
 	}
@@ -112,16 +112,16 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 		st.st_ino = de->d_ino;
 		st.st_mode = de->d_type << 12;
 		if(strcmp(de->d_name, ".") && strcmp(de->d_name,".."))
-      		  {	
+      		{	
 			strcpy(fname, de->d_name);
             		decr(fname);
     			res = (filler(buf,fname, &st, 0));
  	       	  }
         	else
         	{
-            		res = (filler(buf,de->d_name, &st, 0));    
+            		res = (filler(buf,de->d_name, &st, 0));   
         	}
-			if(res!=0) break;
+		if(res!=0) break;
 	}
 
 	closedir(dp);
