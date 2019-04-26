@@ -8,11 +8,17 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
 #define key 17
 
 static const char *dirpath = "/home/maya/shift4";
 static const char *youtuber = "/home/maya/shift4/YOUTUBER";
+static const char *mirisPath = "/home/maya/shift4/filemiris.txt";
 char x[] ="qE1~ YMUR2\"`hNIdPzi%^t@(Ao:=CQ,nx4S[7mHFye#aT6+v)DfKL$r?bkOGB>}!9_wV']jcp5JZ&Xl|\\8s;g<{3.u*W-0";
+
 void encr(char inp[]){
 	int idx; 
 	int i, j;
@@ -33,6 +39,7 @@ void encr(char inp[]){
 		inp[i] = x[idx];}
 	}
 }
+
 void decr(char inp[]){
 	int idx; 
 	int i, j;
