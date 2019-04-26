@@ -206,21 +206,30 @@ static int xmp_chmod(const char *path, mode_t mode)
 	{
 		if(strstr(fpath,".iz1"))
 		{
-			char* argv[] = {"zenity", "--error", "--text=File ekstensi iz1 tidak boleh diubah permissionnya.", NULL};
-			execv("/usr/bin/zenity", argv);
-			return 0;
+			pid_t child_id;
+
+			child_id = fork();
+			
+			if (child_id < 0) {
+				exit(EXIT_FAILURE);
+			}
+
+			if (child_id == 0) {
+				// this is child
+				char* argv[] = {"zenity", "--error", "--text=File ekstensi iz1 tidak boleh diubah permissionnya.", NULL};
+				execv("/usr/bin/zenity", argv);
+				return 0;
+			}
 			//system("zenity --error --text=File ekstensi iz1 tidak boleh diubah permissionnya.");
 		}
 	}
-	else{
-		int res = 0;
+	int res = 0;
 
-		res = chmod(fpath, mode);
-		if (res == -1)
-			return -errno;
+	res = chmod(fpath, mode);
+	if (res == -1)
+		return -errno;
 
-		return 0;
-	}
+	return 0;
 }
 
 static int xmp_write(const char *path, const char *buf, size_t size,
